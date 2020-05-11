@@ -1,0 +1,213 @@
+---
+title: "Animal Crossing Tidy Tuesday"
+output: html_notebook
+---
+
+
+
+```{r import data, message=FALSE, warning=FALSE}
+#Get Data
+
+critic <- readr::read_tsv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/critic.tsv')
+user_reviews <- readr::read_tsv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/user_reviews.tsv')
+items <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/items.csv')
+villagers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/villagers.csv')
+```
+
+```{r load libraries, message=FALSE, warning=FALSE}
+#Load libraries and images
+
+library(tidyverse)
+library(tm)
+library(wordcloud)
+
+
+
+
+
+
+```
+
+
+Let's see the trends of the review of critics and users
+
+Trends graph
+```{r trend graph}
+
+#Multiply user review by ten so it has the same range as the critics.
+
+user_reviews <- user_reviews %>% 
+  mutate(grade_new=grade*10) %>% 
+  mutate(grade=grade_new) %>% 
+  select(-grade_new) %>% 
+  rename(publication=user_name) %>% 
+  mutate(user_type="user") #Create variable that distinguishes critics from users
+  
+  
+
+#Merge data base by date
+
+critic <- critic %>% 
+  mutate(user_type="critic") #Create variable that distinguishes critics from users
+
+
+merge_data <- rbind(user_reviews, critic)
+
+
+mean_grade_plot <-
+  merge_data %>%
+  group_by(date, user_type) %>%
+  mutate(grade_mean = mean(grade)) %>% #Create mean grade of each review day
+  ungroup() %>%
+  ggplot(aes(x = date, y = grade_mean, col = user_type)) +
+  geom_line(size = 1, alpha = 2) +
+  geom_point(size = 2, alpha = 2) +
+  labs(x = "", y = "Average grade by day", col = "") +
+  ggtitle("Average grade review of Animal\n Crossing by critics and users") +
+  scale_color_manual(values = c("critic" = "#E59D15",
+                                "user" = "#6CBE6A")) +
+  theme(
+    panel.background = element_rect(fill = "#DFE6EE",
+                                    colour = "#DFE6EE"),
+    plot.background = element_rect(fill = "#DFE6EE"),
+    legend.background = element_rect(fill = "#DFE6EE"),
+    legend.key = element_rect(fill = "#DFE6EE"),
+    plot.title = element_text(hjust = 0.5),
+    legend.text = element_text(size = c(11)),
+      legend.position = "bottom",
+      legend.box = "vertical"
+    )
+  
+
+  
+
+```
+
+
+WordCloud critics
+```{r  word cloud of critics}
+#Importarlo en la forma que se necesita para generar la nube de palabras
+dfCorpus_critics <- VCorpus(VectorSource(critic$text))
+
+# Convert the text to lower case
+dfCorpus_critics <- tm_map(dfCorpus_critics, content_transformer(tolower))
+# Remove english common stopwords
+dfCorpus_critics <- tm_map(dfCorpus_critics, removeWords, stopwords("english"))
+# Remove common stop word (those that have to do with the game name)
+dfCorpus_critics <- tm_map(dfCorpus_critics, removeWords, c("new", "animal", "crossing", "game", "series", "much", "nintendo", "can", "switch", "games", "horizons", "something", "will", "island", "one", "just", "islands", "play", "player" )) 
+# Remove punctuations
+dfCorpus_critics <- tm_map(dfCorpus_critics, removePunctuation)
+
+#Generar frecuencia de palabras
+dtm_critics <- TermDocumentMatrix(dfCorpus_critics)
+m_critics <- as.matrix(dtm_critics)
+v_critics <- sort(rowSums(m_critics),decreasing=TRUE)
+d_critics <- data.frame(word = names(v_critics),freq=v_critics)
+d_critics
+
+#Generate word cloud
+
+set.seed(1234)
+critics_word_cloud <- wordcloud(words = d_critics$word, freq = d_critics$freq, min.freq = 5,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"), scale=c(2,.5))
+
+ggsave("word_cloud_critics.jpg")
+```
+
+Critics Histogram
+```{r critics histogram}
+#Histogram
+
+ hist_critics <- 
+  d_critics %>% 
+  filter(freq>13) %>% 
+  ggplot(aes(x=reorder(word, -freq), y=freq))+
+  geom_bar(stat="identity", fill="#E7B463")+
+  labs(y="Word Count", x="")+
+  ggtitle("Most used words in critics' reviews")+
+  theme(
+    panel.background = element_rect(fill = "#DFE6EE",
+                                    colour = "#DFE6EE"),
+    plot.background = element_rect(fill = "#DFE6EE"),
+    legend.background = element_rect(fill = "#DFE6EE"),
+    legend.key = element_rect(fill = "#DFE6EE"),
+    legend.position = "bottom",
+          legend.box = "vertical",
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+
+
+WordCloud Users
+```{r word cloud of users}
+#Importarlo en la forma que se necesita para generar la nube de palabras
+dfCorpus_users <- VCorpus(VectorSource(user_reviews$text))
+
+# Convert the text to lower case
+dfCorpus_users <- tm_map(dfCorpus_users, content_transformer(tolower))
+# Remove english common stopwords
+dfCorpus_users <- tm_map(dfCorpus_users, removeWords, stopwords("english"))
+# Remove common stop word (those that have to do with the game name)
+dfCorpus_users <- tm_map(dfCorpus_users, removeWords, c("new", "animal", "crossing", "game", "series", "much", "nintendo", "can", "switch", "games", "horizons", "something", "will", "island", "one", "just", "islands", "play", "player", "per", "console")) 
+# Remove punctuations
+dfCorpus_users <- tm_map(dfCorpus_users, removePunctuation)
+
+#Generar frecuencia de palabras
+dtm_users <- TermDocumentMatrix(dfCorpus_users)
+m_users <- as.matrix(dtm_users)
+v_users <- sort(rowSums(m_users),decreasing=TRUE)
+d_users <- data.frame(word = names(v_users),freq=v_users)
+d_users
+
+#Generate word cloud
+
+set.seed(1234)
+users_word_cloud <- wordcloud(words = d_users$word, freq = d_users$freq, min.freq = 5,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"), scale=c(2,.5))
+
+ggsave("word_cloud_users.jpg")
+```
+
+Users Histogram
+```{r users histogram}
+
+#Histogram
+hist_user <-
+  d_users %>%
+  filter(freq > 780) %>%
+  ggplot(aes(x = reorder(word,-freq), y = freq)) +
+  geom_bar(stat = "identity", fill = "#AEE683") +
+  labs(y = "Word Count", x = "") +
+  ggtitle("Most used words in users' reviews") +
+  theme(
+    panel.background = element_rect(fill = "#DFE6EE",
+                                    colour = "#DFE6EE"),
+    plot.background = element_rect(fill = "#DFE6EE"),
+    legend.background = element_rect(fill = "#DFE6EE"),
+    legend.key = element_rect(fill = "#DFE6EE"),
+    legend.position = "bottom",
+    legend.box = "vertical",
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 90, hjust = 1)
+  ) 
+  
+```
+
+
+
+Final graph
+
+```{r}
+library(patchwork)
+
+final_plot <- 
+  ((mean_grade_plot) | (hist_critics / hist_user))
+
+
+ggsave("final_plot.jpg")
+```
+
+
