@@ -23,9 +23,6 @@ library(wordcloud)
 
 
 
-
-
-
 ```
 
 
@@ -112,7 +109,6 @@ critics_word_cloud <- wordcloud(words = d_critics$word, freq = d_critics$freq, m
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"), scale=c(2,.5))
 
-ggsave("word_cloud_critics.jpg")
 ```
 
 Critics Histogram
@@ -168,7 +164,6 @@ users_word_cloud <- wordcloud(words = d_users$word, freq = d_users$freq, min.fre
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"), scale=c(2,.5))
 
-ggsave("word_cloud_users.jpg")
 ```
 
 Users Histogram
