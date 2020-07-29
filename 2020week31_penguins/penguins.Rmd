@@ -81,7 +81,7 @@ p2 <-
 
 p3 <- p1/p2 +
     labs(caption = "Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-28/readme.md")+
-  ggsave(here::here("2020week31", "penguins.png"), dpi = 320, height = 8, width = 8)
+  ggsave(here::here("2020week31_penguins", "penguins.png"), dpi = 320, height = 8, width = 8)
 
 ```
 
