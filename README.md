@@ -2,12 +2,14 @@
 
 
 <details>
-  <summary>Contributions in order with link to repo (click to expand)</summary>
+  <summary>Contributions in order with link to repo (click to expand) </summary>
+  
 <!-- toc -->
 * **2020 Submissions**  
   - Contibution week 19 [Animal Crossing :cat: :hamster:](https://github.com/feligonza17/Tidy_Tuesday/tree/master/2020week19_animal_crossing)  
   - Contibution week 31 [Penguins :penguin:](https://github.com/feligonza17/Tidy_Tuesday/tree/master/2020week31_penguins)  
 <!-- tocstop -->
+
 </details>
 
 ## Contribuition 2 (2020week31): 
