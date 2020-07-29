@@ -1,0 +1,91 @@
+---
+title: "TidyTuesday 2020 Week31 : Penguins"
+author: "Felipe González-Arango"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r message=FALSE, warning=FALSE}
+#Packages
+library(tidyverse)
+library(janitor)
+library(GGally)
+library(patchwork)
+
+
+#Import Data
+tuesdata <- tidytuesdayR::tt_load(2020, week = 31)
+penguins <- tuesdata[[1]]
+penguins <- clean_names(penguins)
+#penguins <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins.csv')
+
+```
+
+#Data Exploration
+```{r}
+penguins %>% 
+  count(sex)
+```
+
+#Plot
+```{r body_mass} 
+
+#Create vector with variables to use in plot
+
+penguins$species <- as.factor(penguins$species)
+
+p1 <- 
+penguins %>% 
+  na.omit() %>% 
+  ggparcoord(columns = 3:5,
+             groupColumn = "species",
+             scale="std",
+             showPoints = TRUE,
+             boxplot = FALSE,
+             alphaLines = 0.45,
+             )+
+  ylab("Normalized length \n(substract mean & divide by sd)")+
+  xlab("")+
+  scale_color_manual(values = c("darkorange","darkorchid","cyan4"))+
+  scale_x_discrete(labels=c("bill_length_mm" = "Bill Length (in mm)", 
+                            "bill_depth_mm" = "Bill Depth (in mm)",
+                            "flipper_length_mm" = "Flipper Length (in mm)"))+
+  ggdark::dark_theme_minimal()+
+  labs(color = "Species",
+       title = "TidyTuesday Penguins",
+       caption = "Plot Creation: Felipe González-Arango")+
+  ggtitle("Relationship between bill length, bill depth and flipper length by species")
+
+
+p2 <-
+  penguins %>%
+  na.omit() %>%
+  ggplot(aes(x = species, y = body_mass_g, fill = species)) +
+  geom_violin(alpha = 0.5) +
+  geom_jitter(alpha = 0.8,
+              color = "rosybrown3",
+              shape = 17) +
+  scale_fill_manual(values = c("darkorange", "darkorchid", "cyan4")) +
+  ylab("Body Mass (in g)") +
+  xlab("")+
+  ggdark::dark_theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(
+          face = "bold",
+          colour = c("darkorange", "darkorchid", "cyan4"),
+          size=c(13,13,13)),
+        ) +
+  ggtitle("Body Mass Distribution (in g) by species")
+
+p3 <- p1/p2 +
+    labs(caption = "Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-28/readme.md")+
+  ggsave(here::here("2020week31", "penguins.png"), dpi = 320, height = 8, width = 8)
+
+```
+
+
+
+
+
