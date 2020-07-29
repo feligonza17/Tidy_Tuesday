@@ -2,19 +2,22 @@
 Tidy Tuesday Contributions
 
 
-Contribuition Number 2: 
+## Contribuition 2: 
+
+### Penguins!
+
+[CODE for Penguin plot](https://github.com/feligonza17/Tidy_Tuesday/blob/master/2020week31_penguins/penguins.Rmd)
+![](2020week31_penguins/penguins.png)
 
 
-[Penguin plot](https://github.com/feligonza17/Tidy_Tuesday/tree/master/2020week31)
-![Penguins plot](2020week31/penguins.png)
+## Contribuition 1: 
 
+### Animal Crossing! (plot)
 
-Contribuition Number 1:
+[CODE for Animal Crossing Plot](https://github.com/feligonza17/Tidy_Tuesday/blob/master/2020week19_animal_crossing/animal_crossing.Rmd)
+![](2020week19_animal_crossing/final_plot.jpg)
 
-Animal Crossing:
-![Animal Crossing Plot](2020-05-05_Animal_Crossing/final_plot.jpg)
+### Animal Crossing! (word clouds)
 
-Word clouds:
-
-![Word Cloud Critics](2020-05-05_Animal_Crossing/word_cloud_critics.png)
-![Word Cloud Users](2020-05-05_Animal_Crossing/word_cloud_users.png)
+![Word Cloud Critics](2020week19_animal_crossing/word_cloud_critics.png)
+![Word Cloud Users](2020week19_animal_crossing/word_cloud_users.png)
