@@ -4,7 +4,13 @@ Tidy Tuesday Contributions
 
 ## Contribuition 2: 
 
-### Penguins!
+### Penguins! :penguin:
+
+#:eagle:
+
+:penguin:
+:blush:
+| :bowtie: `:bowtie:` |
 
 [CODE for Penguin plot](https://github.com/feligonza17/Tidy_Tuesday/blob/master/2020week31_penguins/penguins.Rmd)
 ![](2020week31_penguins/penguins.png)
