@@ -56,7 +56,7 @@ penguins %>%
   labs(color = "Species",
        title = "TidyTuesday Penguins",
        caption = "Plot Creation: Felipe González-Arango")+
-  ggtitle("Relationship between bill length, bill depth and flipper length by species")
+  ggtitle("Relationship between the bill length, bill depth and flipper length\n of three different penguin species")
 
 
 p2 <-
@@ -77,7 +77,7 @@ p2 <-
           colour = c("darkorange", "darkorchid", "cyan4"),
           size=c(13,13,13)),
         ) +
-  ggtitle("Body Mass Distribution (in g) by species")
+  ggtitle("Body Mass Distribution (in g) by penguin species")
 
 p3 <- p1/p2 +
     labs(caption = "Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-28/readme.md")+
