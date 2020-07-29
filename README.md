@@ -5,7 +5,7 @@ Tidy Tuesday Contributions
 Contribuition Number 2: 
 
 
-[Penguin plot](https://github.com/feligonza17/Tidy_Tuesday/blob/master/2020-05-05_Animal_Crossing)
+[Penguin plot](https://github.com/feligonza17/Tidy_Tuesday/tree/master/2020week31)
 ![Penguins plot](2020week31/penguins.png)
 
 
