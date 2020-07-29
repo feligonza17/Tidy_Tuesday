@@ -109,6 +109,8 @@ critics_word_cloud <- wordcloud(words = d_critics$word, freq = d_critics$freq, m
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"), scale=c(2,.5))
 
+ ggsave(here::here("2020week19_animal_crossing", "word_cloud_critics.png"), dpi = 320, height = 8, width = 8)
+
 ```
 
 Critics Histogram
@@ -164,6 +166,8 @@ users_word_cloud <- wordcloud(words = d_users$word, freq = d_users$freq, min.fre
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"), scale=c(2,.5))
 
+ ggsave(here::here("2020week19_animal_crossing", "word_cloud_users.png"), dpi = 320, height = 8, width = 8)
+
 ```
 
 Users Histogram
@@ -201,8 +205,7 @@ library(patchwork)
 final_plot <- 
   ((mean_grade_plot) | (hist_critics / hist_user))
 
-
-ggsave("final_plot.jpg")
+ ggsave(here::here("2020week19_animal_crossing", "final_plot.jpg"), dpi = 320, height = 8, width = 8)
 ```
 
 
